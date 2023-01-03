@@ -7,7 +7,7 @@ def aStarAlgo(start_node, stop_node):
     parents[start_node] = start_node
     while len(open_set) > 0:
         n = None
-        for v in open_set():
+        for v in open_set.copy():
             if n == None or g[v] + heuristic(v) < g[n] + heuristic(n):
                 n = v
         if n == stop_node or Graph_nodes[n] == None:
@@ -25,22 +25,22 @@ def aStarAlgo(start_node, stop_node):
                         if m in closed_set:
                             closed_set.remove(m)
                             open_set.add(m)
-                if n == None:
-                    print('Path does not exist!')
-                    return None
-                if n == stop_node:
-                    path = []
-                    while parents[n] != n:
-                        path.append(n)
-                        n = parents[n]
-                    path.append(start_node)
-                    path.reverse()
-                    print('Path found: {}'.format(path))
-                    return path
-                open_set.remove(n)
-                closed_set.add(n)
+        if n == None:
             print('Path does not exist!')
             return None
+        if n == stop_node:
+            path = []
+            while parents[n] != n:
+                path.append(n)
+                n = parents[n]
+            path.append(start_node)
+            path.reverse()
+            print('Path found: {}'.format(path))
+            return path
+        open_set.remove(n)
+        closed_set.add(n)
+    print('Path does not exist!')
+    return None
 
 
 def get_neighbors(v):
@@ -49,24 +49,48 @@ def get_neighbors(v):
     else:
         return None
 
+# GRAPH 1 HEURISTIC VALUES
+# def heuristic(n):
+#     H_dist = {
+#         'A': 11,
+#         'B': 6,
+#         'C': 99,
+#         'D': 1,
+#         'E': 7,
+#         'G': 0, }
+#     return H_dist[n]
 
+# GRAPH 2 HEURISTIC VALUES
 def heuristic(n):
     H_dist = {
-        'A': 11,
-        'B': 6,
-        'C': 99,
-        'D': 1,
-        'E': 7,
-        'G': 0, }
+        'S': 14,
+        'B': 12,
+        'C': 11,
+        'D': 6,
+        'E': 4,
+        'F': 11,
+        'G': 99, }
     return H_dist[n]
 
 
+# GRAPH 1 NODE PATHS & WEIGHTS
+# Graph_nodes = {
+#     'A': [('B', 2), ('E', 3)],
+#     'B': [('C', 1), ('G', 9)],
+#     'C': None,
+#     'E': [('D', 6)],
+#     'D': [('G', 1)],
+# }
+
+# GRAPH 2 NODE PATHS & WEIGHTS
 Graph_nodes = {
-    'A': [('B', 2), ('E', 3)],
-    'B': [('C', 1), ('G', 9)],
-    'C': None,
-    'E': [('D', 6)],
-    'D': [('G', 1)],
+    'S': [('B', 4), ('C', 3)],
+    'B': [('F', 5), ('E', 12)],
+    'C': [('E', 10), ('D', 7)],
+    'D': [('E', 2)],
+    'E': [('G', 5)],
+    'F': [('G', 16)],
+    'G': None,
 }
 
-aStarAlgo('A', 'G')
+aStarAlgo('S', 'G')
